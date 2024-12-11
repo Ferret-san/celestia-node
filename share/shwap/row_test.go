@@ -1,6 +1,7 @@
 package shwap
 
 import (
+	"encoding/json"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -33,6 +34,15 @@ func TestRowFromShares(t *testing.T) {
 			}
 			require.Equal(t, half, row.halfShares)
 			require.Equal(t, side, row.side)
+
+			data, err := json.Marshal(row)
+			require.NoError(t, err)
+
+			decodedRow := &Row{}
+			err = json.Unmarshal(data, decodedRow)
+			require.NoError(t, err)
+			require.Equal(t, row.halfShares, decodedRow.halfShares)
+			require.Equal(t, row.side, decodedRow.side)
 		}
 	}
 }
